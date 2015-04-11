@@ -18,16 +18,16 @@ angular.module('weatherApp')
     
       $http.get(url).then(function (res) {
         var channel = res.data.query.results.channel;
-        var data = {};
+        var city = {};
       
-        data.city = channel.location.city;
-        data.state = channel.location.region;
-      
-        data.img = channel.item.description.match('img src=\"(.*)\"')[1];
-        data.temp = channel.item.condition.temp;
-        data.text = channel.item.condition.text;
+        city.name = channel.location.city;
+        city.state = channel.location.region;
         
-        callback(data);
+        city.img = channel.item.description.match('img src=\"(.*)\"')[1];
+        city.temp = channel.item.condition.temp;
+        city.text = channel.item.condition.text;
+        
+        callback(city);
       });
     };
   }]);

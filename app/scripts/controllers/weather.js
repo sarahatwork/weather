@@ -11,13 +11,14 @@ angular.module('weatherApp')
   .controller('WeatherCtrl', ['weather', function (weather) {
     var self = this;
     this.query = 'Jersey City';
-    this.data = {};
-    
+    this.cities = [];
+
     this.search = function() {
       weather.search(self.query, function(data) {
-        self.data = data;
+        self.cities.push(data);
+        console.log(self.cities)
       });
     };
-    
+
     this.search();
   }]);

@@ -66,6 +66,26 @@ h2 {
   margin-right: 20px;
 }
 
+.weather-list, .weather-list-item {
+  margin: 0;
+  padding: 0;
+}
+
+.weather-list-item {
+  list-style-type: none;
+  margin-bottom: 20px;
+}
+
+.weather-list-item:last-child {
+  margin-bottom: 0;
+}
+
+.weather-list-item:after {
+  content: '';
+  display: table;
+  clear: both; 
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {

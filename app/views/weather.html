@@ -1,0 +1,9 @@
+<div class="row" ng-controller="WeatherCtrl as ctrl" class="ng-cloak">
+  <div class="col-sm-12 weather">
+    <img ng-src="{{ctrl.data.img}}" class="weather-img pull-left">
+    <h2>Weather for {{ctrl.data.city}}, {{ctrl.data.state}}</h2>
+    <div>
+      <strong>{{ctrl.data.text}}</strong>, {{ctrl.data.temp}}°F
+    </div>
+  </div>
+</div>

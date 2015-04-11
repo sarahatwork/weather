@@ -14,13 +14,41 @@ angular.module('weatherApp')
     this.showForm = false;
     this.cities = [];
 
+    // grid info
+    this.columns = 2;
+    this.colSpan = 12 / this.columns;
+    this.cityRows = [];
+
     this.search = function() {
       weather.search(self.query, function(data) {
         self.cities.push(data);
         self.query = '';
         self.showForm = false;
+        
+        self.organizeRows();
       });
     };
+    
+    this.organizeRows = function() {
+      var currentRow = [];
+      self.cityRows = [];
+      
+      var rowStartsAt = 0;
+      var rowEndsAt = self.columns - 1;
+      var count = self.cities.length;
+      
+      self.cities.forEach(function(city, i) {
+        var modIdx = i % self.columns;
+        currentRow.push(city)
+        
+        if (modIdx === rowEndsAt || i == count - 1) {
+          // if ending row or last item
+          self.cityRows.push(currentRow);
+          currentRow = [];
+        }
+
+      });
+    }
     
     this.toggleForm = function() {
       self.showForm = !self.showForm;

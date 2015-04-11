@@ -9,13 +9,13 @@
 </div>
 
 <div class="container">
-  <ul ng-controller="WeatherCtrl as ctrl" class="weather-list ng-cloak">
+  <div ng-controller="WeatherCtrl as ctrl" class="weather-list ng-cloak">
   
-    <li ng-repeat="c in ctrl.cities" class="weather-list-item">
+    <div ng-repeat="c in ctrl.cities" class="weather-list-item">
       <div city-summary city="c"></div>
-    </li>
+    </div>
   
-    <li class="weather-list-item">
+    <div class="weather-list-item">
       <btn class="btn btn-default btn-lg"
            ng-hide="ctrl.showForm"
            ng-click="ctrl.toggleForm()">
@@ -46,6 +46,6 @@
         </div>
       
       </form>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>

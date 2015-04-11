@@ -11,8 +11,8 @@
 <div class="container">
   <ul ng-controller="WeatherCtrl as ctrl" class="weather-list ng-cloak">
   
-    <li ng-repeat="city in ctrl.cities" class="weather-list-item">
-      <div city-summary></div>
+    <li ng-repeat="c in ctrl.cities" class="weather-list-item">
+      <div city-summary city="c"></div>
     </li>
   
     <li class="weather-list-item">

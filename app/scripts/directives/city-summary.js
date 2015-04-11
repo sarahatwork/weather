@@ -10,6 +10,9 @@ angular.module('weatherApp')
   .directive('citySummary', function () {
     return {
       templateUrl: 'views/city-summary.html',
-      restrict: 'A'
+      restrict: 'A',
+      scope: {
+        city: '='
+      }
     };
   });

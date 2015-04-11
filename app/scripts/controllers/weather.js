@@ -18,6 +18,7 @@ angular.module('weatherApp')
     this.columns = 2;
     this.colSpan = 12 / this.columns;
     this.cityRows = [];
+    this.roomForButton = true;
 
     this.search = function() {
       weather.search(self.query, function(data) {
@@ -48,6 +49,9 @@ angular.module('weatherApp')
         }
 
       });
+      
+      var lastRow = self.cityRows[self.cityRows.length - 1];      
+      this.roomForButton = lastRow.length < self.columns;
     }
     
     this.toggleForm = function() {

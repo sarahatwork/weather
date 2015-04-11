@@ -1,39 +1,51 @@
-<ul ng-controller="WeatherCtrl as ctrl" class="weather-list ng-cloak">
+<div class="header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>City Weather</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <ul ng-controller="WeatherCtrl as ctrl" class="weather-list ng-cloak">
   
-  <li ng-repeat="city in ctrl.cities" class="weather-list-item">
-    <div city-summary></div>
-  </li>
+    <li ng-repeat="city in ctrl.cities" class="weather-list-item">
+      <div city-summary></div>
+    </li>
   
-  <li class="weather-list-item">
-    <btn class="btn btn-default btn-lg"
-         ng-hide="ctrl.showForm"
-         ng-click="ctrl.toggleForm()">
-      Add City
-      <span class="glyphicon glyphicon-plus"></span>
-    </btn>
+    <li class="weather-list-item">
+      <btn class="btn btn-default btn-lg"
+           ng-hide="ctrl.showForm"
+           ng-click="ctrl.toggleForm()">
+        Add City
+        <span class="glyphicon glyphicon-plus"></span>
+      </btn>
     
-    <form ng-show="ctrl.showForm"
-          name="addCity"
-          ng-submit="ctrl.search()">
+      <form ng-show="ctrl.showForm"
+            name="addCity"
+            ng-submit="ctrl.search()">
           
-      <div class="form-group row">
-        <div class="col-sm-6">
-          <input type="text"
-                 placeholder="City/Zip Code"
-                 class="form-control"
-                 ng-model="ctrl.query"
-                 required>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <input type="text"
+                   placeholder="City/Zip Code"
+                   class="form-control"
+                   ng-model="ctrl.query"
+                   required>
+          </div>
         </div>
-      </div>
         
-      <div class="form-group row">
-        <div class="col-sm-6">
-          <input type="submit"
-                 class="btn btn-default"
-                 ng-disabled="addCity.$invalid">
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <input type="submit"
+                   class="btn btn-default"
+                   ng-disabled="addCity.$invalid">
+          </div>
         </div>
-      </div>
       
-    </form>
-  </li>
-</ul>
+      </form>
+    </li>
+  </ul>
+</div>

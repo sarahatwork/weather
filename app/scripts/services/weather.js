@@ -31,8 +31,6 @@ angular.module('weatherApp')
                 "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
       
       $http.get(url).then(function (res) {
-        console.log('im making a query for ' + query);
-        
         var channel = res.data.query.results.channel;
         var city = {};
       

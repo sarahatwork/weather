@@ -12,11 +12,14 @@ angular.module('weatherApp')
       templateUrl: 'views/city-summary.html',
       restrict: 'A',
       scope: {
-        city: '='
+        city: '=',
+        deleteCity: '&'
       },
       controller: function($scope) {
-        $scope.deleteCity = function() {
-          debugger;
+        $scope.onClickCloseButton = function() {
+          $scope.deleteCity({
+            cityId: $scope.city.id
+          })
         }
       }
     };

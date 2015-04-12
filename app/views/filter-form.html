@@ -1,0 +1,19 @@
+<form class="filter-form" 
+      name="filterCity">
+      
+  <div class="input-group">
+    <input type="search"
+           placeholder="Filter by city or state"
+           class="form-control input-lg"
+           ng-model="ctrl.filterQuery"
+           ng-change="ctrl.filterCities()"
+           required>
+   
+    <span class="input-group-btn">
+      <button class="btn btn-default btn-lg" 
+              type="button"
+              ng-disabled="filterCity.$invalid">
+        <span class="glyphicon glyphicon-filter"></span>
+      </button>
+    </div>
+</form>

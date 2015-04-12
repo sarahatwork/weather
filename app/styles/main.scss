@@ -70,9 +70,29 @@ body {
   color: #333;
 }
 
-.forecast-table h3 {
-  font-size: 18px;
-  margin-top: 2px;
+.city-detail-table {
+  margin-bottom: 0;
+}
+
+.city-detail-table h3 {
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+.weather-img-td {
+  text-align: right;
+}
+
+.details-header__back-link {
+  padding-top: 25px;
+}
+
+.city-detail-table td, .city-detail-table th {
+  vertical-align: middle !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
 .weather-list-item:hover, .weather-list-item:hover * {

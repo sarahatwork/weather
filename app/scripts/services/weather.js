@@ -42,6 +42,13 @@ angular.module('weatherApp')
           return data;
         });
         
+        city.feelsLike = channel.wind.chill
+        city.windSpeed = channel.wind.speed
+        city.humidity = channel.atmosphere.humidity
+        city.visibility = channel.atmosphere.visibility
+        city.sunrise = channel.astronomy.sunrise
+        city.sunset = channel.astronomy.sunset
+        
         if (self.cityIds.indexOf(city.id) === -1) {
           self.cityIds.push(city.id);
         }

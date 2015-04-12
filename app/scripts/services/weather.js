@@ -12,9 +12,9 @@ angular.module('weatherApp')
     var self = this;
     
     this.$storage = $localStorage.$default({
-      // list of IDs, eg 'USNJ0234_2015_04_16_7_00_EDT'
+      // list of IDs, eg 'CITY-Jersey%20City_STATE-NJ'
       cityIds: [],
-      // map of queries to IDs, eg 'Jersey City' => 'USNJ0234_2015_04_16_7_00_EDT'
+      // map of queries to IDs, eg 'Jersey City' => 'CITY-Jersey%20City_STATE-NJ'
       cityQueries: {}
     });
     
@@ -31,15 +31,13 @@ angular.module('weatherApp')
                 "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
       
       $http.get(url).then(function (res) {
-        console.log('i just made a request for ' + query)
-        
         var channel = res.data.query.results.channel;
         var city = {};
       
         city.name = channel.location.city;
         city.state = channel.location.region;
         
-        city.id = 'CITY:' + urlEncodeFilter(city.name) + '_STATE:' + city.state;
+        city.id = 'CITY-' + urlEncodeFilter(city.name) + '_STATE-' + city.state;
         city.dateUpdated = self.todaysDate();
         
         city.temp = channel.item.condition.temp;
@@ -81,18 +79,18 @@ angular.module('weatherApp')
     }
     
     this.getCityByQuery = function(query, callback) {
-      var currentId = self.$storage.cityQueries[query];
+      var cityId = self.$storage.cityQueries[query];
       
-      if (currentId) {
+      if (cityId) {
         // if data exists
-        var lastUpdatedDate = self.$storage[currentId].dateUpdated;
+        var lastUpdatedDate = self.$storage[cityId].dateUpdated;
         
         if (self.todaysDate() === lastUpdatedDate) {
           // if last updated today, we're good
           callback(self.cityData());
         } else {
           // else, clear data
-          self.$storage[currentId] = null;
+          self.$storage[cityId] = null;
           self.search(query, callback)
         }
         
@@ -102,8 +100,8 @@ angular.module('weatherApp')
       }
     }
     
-    this.getCityByKey = function(key, callback) {
-      callback(self.$storage[key]);
+    this.getCityById = function(cityId, callback) {
+      callback(self.$storage[urlEncodeFilter(cityId)]);
     }
     
     this.todaysDate = function() {

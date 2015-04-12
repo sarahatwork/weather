@@ -52,11 +52,15 @@ angular.module('weatherApp')
         
         callback(self.cityData());
       });
-      
-      this.cityData = function() {
-        return self.cityIds.map(function(key) {
-          return angular.fromJson($cookies[key]);
-        });
-      }
     };
+    
+    this.cityData = function() {
+      return self.cityIds.map(function(key) {
+        return angular.fromJson($cookies[key]);
+      });
+    }
+    
+    this.getCityByKey = function(key, callback) {
+      callback(angular.fromJson($cookies[key]));
+    }
   }]);

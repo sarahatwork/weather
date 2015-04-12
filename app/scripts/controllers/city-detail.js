@@ -11,8 +11,8 @@ angular.module('weatherApp')
   .controller('CityDetailCtrl', ['weather', '$routeParams', function (weather, $routeParams) {
     var self = this;
     this.city = {};
-    
-    weather.getCity($routeParams.id, function(city) {
+
+    weather.getCityByKey($routeParams.id, function(city) {
       self.city = city;
-    });
+    })
   }]);

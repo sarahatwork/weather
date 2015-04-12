@@ -8,7 +8,7 @@
  * Service in the weatherApp.
  */
 angular.module('weatherApp')
-  .service('weather', ['$http', '$cookies', function ($http, $cookies) {
+  .service('weather', ['$http', '$cookies', 'urlEncodeFilter', function ($http, $cookies, urlEncodeFilter) {
     var self = this;
     this.cityIds = ($cookies['cityIds'] && angular.fromJson($cookies['cityIds'])) || [];
     this.cityQueries = ($cookies['cityQueries'] && angular.fromJson($cookies['cityQueries'])) || {};
@@ -18,12 +18,13 @@ angular.module('weatherApp')
     }
     
     this.search = function(query, callback) {
-      var url = "https://query.yahooapis.com/v1/public/yql?q=select" +
-                "%20*%20from%20weather.forecast%20where%20woeid%20in%20" +
-                "(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22" +
-                query + "%22)" +
+      var queryString = "select * from weather.forecast where woeid in " +
+                        "(select woeid from geo.places(1) where text=\"" + query + "\")";
+                
+      var url = "https://query.yahooapis.com/v1/public/yql?q=" +
+                urlEncodeFilter(queryString) +
                 "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
-    
+      
       $http.get(url).then(function (res) {
         console.log('i just made a request for ' + query)
         var channel = res.data.query.results.channel;

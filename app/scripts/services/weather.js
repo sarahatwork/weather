@@ -8,10 +8,15 @@
  * Service in the weatherApp.
  */
 angular.module('weatherApp')
-  .service('weather', function ($http, $cookies, urlEncodeFilter) {
+  .service('weather', function ($http, $localStorage, $filter, urlEncodeFilter) {
     var self = this;
-    this.cityIds = ($cookies['cityIds'] && angular.fromJson($cookies['cityIds'])) || [];
-    this.cityQueries = ($cookies['cityQueries'] && angular.fromJson($cookies['cityQueries'])) || {};
+    
+    this.$storage = $localStorage.$default({
+      // list of IDs, eg 'USNJ0234_2015_04_16_7_00_EDT'
+      cityIds: [],
+      // map of queries to IDs, eg 'Jersey City' => 'USNJ0234_2015_04_16_7_00_EDT'
+      cityQueries: {}
+    });
     
     this.imgFor = function(code) {
       return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
@@ -27,12 +32,15 @@ angular.module('weatherApp')
       
       $http.get(url).then(function (res) {
         console.log('i just made a request for ' + query)
+        
         var channel = res.data.query.results.channel;
         var city = {};
       
         city.name = channel.location.city;
         city.state = channel.location.region;
-        city.id = channel.item.guid.content;
+        
+        city.id = 'CITY:' + urlEncodeFilter(city.name) + '_STATE:' + city.state;
+        city.dateUpdated = self.todaysDate();
         
         city.temp = channel.item.condition.temp;
         city.text = channel.item.condition.text;
@@ -50,19 +58,16 @@ angular.module('weatherApp')
         city.sunrise = channel.astronomy.sunrise
         city.sunset = channel.astronomy.sunset
         
-        if (self.cityIds.indexOf(city.id) === -1) {
-          self.cityIds.push(city.id);
+        if (self.$storage.cityIds.indexOf(city.id) === -1) {
+          self.$storage.cityIds.push(city.id);
         }
         
-        if (!self.cityQueries[query]) {
-          self.cityQueries[query] = city.id;
+        if (!self.$storage.cityQueries[query]) {
+          self.$storage.cityQueries[query] = city.id;
         }
         
-        $cookies['cityIds'] = angular.toJson(self.cityIds);
-        $cookies['cityQueries'] = angular.toJson(self.cityQueries);
-        
-        if (!$cookies[city.id]) {
-          $cookies[city.id] = angular.toJson(city)
+        if (!self.$storage[city.id]) {
+          self.$storage[city.id] = city;
         }
         
         callback(self.cityData());
@@ -70,20 +75,38 @@ angular.module('weatherApp')
     };
     
     this.cityData = function() {
-      return self.cityIds.map(function(key) {
-        return angular.fromJson($cookies[key]);
+      return self.$storage.cityIds.map(function(key) {
+        return self.$storage[key];
       });
     }
     
     this.getCityByQuery = function(query, callback) {
-      if (self.cityQueries[query]) {
-        callback(self.cityData());
+      var currentId = self.$storage.cityQueries[query];
+      
+      if (currentId) {
+        // if data exists
+        var lastUpdatedDate = self.$storage[currentId].dateUpdated;
+        
+        if (self.todaysDate() === lastUpdatedDate) {
+          // if last updated today, we're good
+          callback(self.cityData());
+        } else {
+          // else, clear data
+          self.$storage[currentId] = null;
+          self.search(query, callback)
+        }
+        
       } else {
+        // else if no data, fetch data
         self.search(query, callback)
       }
     }
     
     this.getCityByKey = function(key, callback) {
-      callback(angular.fromJson($cookies[key]));
+      callback(self.$storage[key]);
+    }
+    
+    this.todaysDate = function() {
+      return $filter('date')(new Date(), "MM-dd-yyyy");
     }
   });

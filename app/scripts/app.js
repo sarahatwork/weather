@@ -11,7 +11,6 @@
 angular
   .module('weatherApp', [
     'ngAnimate',
-    'ngCookies',
     'ngRoute',
     'ngTouch',
     'ngStorage'
@@ -19,11 +18,9 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/weather.html',
-        controller: 'WeatherCtrl'
+        templateUrl: 'views/weather.html'
       })
       .when('/cities/:id', {
-        templateUrl: 'views/city-detail.html',
-        controller: 'CityDetailCtrl'
+        templateUrl: 'views/city-detail.html'
       })
   });

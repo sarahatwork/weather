@@ -57,6 +57,17 @@ body {
   width: 36px;
 }
 
+.details-header h1 {
+  position: relative;
+}
+
+.weather-img.weather-img--city-details {
+  position: absolute;
+  right: -68px;
+  top: -6px;
+  width: auto;
+}
+
 .weather-img.weather-img--left {
   margin-right: 10px;
 }

@@ -11,7 +11,6 @@ angular.module('weatherApp')
   .controller('WeatherCtrl', function (weather, $localStorage, $location, cityNameFilter) {
     var self = this;
     this.query = '';
-    this.showForm = false;
     this.cities = [];
     this.filterQuery = '';
     
@@ -28,7 +27,6 @@ angular.module('weatherApp')
     this.search = function() {
       weather.getCityByQuery(self.query, function(cities) {
         self.query = '';
-        self.showForm = false;
         self.cities = cities;
         self.organizeRows();
       });
@@ -56,10 +54,6 @@ angular.module('weatherApp')
       
       var lastRow = self.cityRows[self.cityRows.length - 1];
       this.roomForButton = lastRow && lastRow.length < self.$storage.columns;
-    }
-    
-    this.toggleForm = function() {
-      self.showForm = !self.showForm;
     }
     
     this.deleteCity = function(cityId) {

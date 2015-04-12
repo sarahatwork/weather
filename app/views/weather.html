@@ -17,13 +17,15 @@
           <div class="col-sm-{{ctrl.colSpan}}">
             <div city-summary city="c"></div>
           </div>
-          <div add-city ng-show="$last && $parent.$last && ctrl.roomForButton"></div>
+          <div class="col-sm-{{ctrl.colSpan}}" ng-show="$last && $parent.$last && ctrl.roomForButton">
+            <div add-city></div>
+          </div>
         </div>
       </div>
     </div>
     
     <div class="row" ng-hide="ctrl.roomForButton">
-      <div class="col-sm{{ctrl.colSpan}}">
+      <div class="col-sm-{{ctrl.colSpan}}">
         <div add-city></div>
       </div>
     </div>

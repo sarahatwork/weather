@@ -1,30 +1,28 @@
-<btn class="btn btn-default btn-lg"
-     ng-hide="ctrl.showForm"
-     ng-click="ctrl.toggleForm()">
-  Add City
-  <span class="glyphicon glyphicon-plus"></span>
-</btn>
+<div class="well well-sm">
+  <btn class="btn btn-default btn-block btn-lg"
+       ng-hide="ctrl.showForm"
+       ng-click="ctrl.toggleForm()">
+    Add City
+    <span class="glyphicon glyphicon-plus"></span>
+  </btn>
 
-<form ng-show="ctrl.showForm"
-      name="addCity"
-      ng-submit="ctrl.search()">
+  <form ng-show="ctrl.showForm"
+        ng-submit="addCity.$valid && ctrl.search()"
+        name="addCity">
     
-  <div class="form-group row">
-    <div class="col-sm-6">
+    <div class="input-group">
       <input type="text"
              placeholder="City/Zip Code"
-             class="form-control"
+             class="form-control input-lg"
              ng-model="ctrl.query"
              required>
-    </div>
-  </div>
-  
-  <div class="form-group row">
-    <div class="col-sm-6">
-      <input type="submit"
-             class="btn btn-default"
-             ng-disabled="addCity.$invalid">
-    </div>
-  </div>
-
-</form>
+           
+      <div class="input-group-addon search-button"
+           ng-click="addCity.$valid && ctrl.search()"
+           ng-disabled="addCity.$invalid"
+           type="submit">
+        <span class="glyphicon glyphicon-search"></span>
+      </div>
+    </div>  
+  </form>
+</div>

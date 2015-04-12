@@ -15,7 +15,7 @@ angular.module('weatherApp')
     this.cities = [];
 
     // grid info
-    this.columns = 2;
+    this.columns = 3;
     this.colSpan = 12 / this.columns;
     this.cityRows = [];
     this.roomForButton = true;

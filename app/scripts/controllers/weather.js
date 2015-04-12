@@ -10,7 +10,7 @@
 angular.module('weatherApp')
   .controller('WeatherCtrl', function (weather, $localStorage, $location) {
     var self = this;
-    this.query = 'Jersey City';
+    this.query = '';
     this.showForm = false;
     this.cities = [];
 
@@ -60,8 +60,22 @@ angular.module('weatherApp')
     this.toggleForm = function() {
       self.showForm = !self.showForm;
     }
+    
+    this.deleteCity = function(cityId) {
+      weather.deleteCity(cityId, function(cities) {
+        self.cities = cities;
+        self.organizeRows();
+      });
+    }
+    
+    this.loadCities = function() {
+      weather.loadCities(function(cities) {
+        self.cities = cities;
+        self.organizeRows();
+      })
+    }
 
-    this.search();
+    this.loadCities();
     
     // debug stuff
     this.debug = function() {

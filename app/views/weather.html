@@ -43,6 +43,7 @@
           <div ng-repeat="c in cities">
             <div class="col-sm-{{ctrl.colSpan()}}">
               <div city-summary city="c"></div>
+              <button ng-click="ctrl.deleteCity(c.id)">Delete City</button>
             </div>
             <div class="col-sm-{{ctrl.colSpan()}}"
                  ng-show="$last && $parent.$last && ctrl.roomForButton">

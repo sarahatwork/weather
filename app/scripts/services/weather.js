@@ -31,6 +31,8 @@ angular.module('weatherApp')
                 "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
       
       $http.get(url).then(function (res) {
+        console.log('im making a query for ' + query);
+        
         var channel = res.data.query.results.channel;
         var city = {};
       
@@ -79,6 +81,7 @@ angular.module('weatherApp')
     }
     
     this.getCityByQuery = function(query, callback) {
+      query = query.toLowerCase();
       var cityId = self.$storage.cityQueries[query];
       
       if (cityId) {
@@ -86,7 +89,11 @@ angular.module('weatherApp')
         var lastUpdatedDate = self.$storage[cityId].dateUpdated;
         
         if (self.todaysDate() === lastUpdatedDate) {
-          // if last updated today, we're good
+          // if last updated today, make sure cityId is in cityIds array
+          // (in case we deleted city from display but still have data)
+          if (self.$storage.cityIds.indexOf(cityId) === -1) {
+            self.$storage.cityIds.push(cityId);
+          }
           callback(self.cityData());
         } else {
           // else, clear data
@@ -100,8 +107,24 @@ angular.module('weatherApp')
       }
     }
     
+    this.loadCities = function(callback) {
+      if (self.$storage.cityIds.length > 0) {
+        // if we have some cities stored, return those
+        callback(self.cityData());
+      } else {
+        // else, grab some data for Jersey City
+        self.getCityByQuery('Jersey City', callback);
+      }
+    }
+    
     this.getCityById = function(cityId, callback) {
       callback(self.$storage[urlEncodeFilter(cityId)]);
+    }
+    
+    this.deleteCity = function(cityId, callback) {
+      var idx = self.$storage.cityIds.indexOf(cityId);
+      self.$storage.cityIds.splice(idx, 1);
+      callback(self.cityData());
     }
     
     this.todaysDate = function() {

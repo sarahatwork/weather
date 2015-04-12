@@ -13,7 +13,8 @@ angular
     'ngAnimate',
     'ngCookies',
     'ngRoute',
-    'ngTouch'
+    'ngTouch',
+    'ngStorage'
   ])
   .config(function ($routeProvider) {
     $routeProvider

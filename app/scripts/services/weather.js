@@ -8,9 +8,9 @@
  * Service in the weatherApp.
  */
 angular.module('weatherApp')
-  .service('weather', ['$http', function ($http) {
+  .service('weather', ['$http', '$cookies', function ($http, $cookies) {
     var self = this;
-    this.cities = {};
+    this.cityIds = ($cookies['cityIds'] && angular.fromJson($cookies['cityIds'])) || [];
     
     this.imgFor = function(code) {
       return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
@@ -40,13 +40,23 @@ angular.module('weatherApp')
           return data;
         });
         
-        self.cities[city.id] = city;
+        if (self.cityIds.indexOf(city.id) === -1) {
+          self.cityIds.push(city.id);
+        }
         
-        callback(city);
+        $cookies['cityIds'] = angular.toJson(self.cityIds);
+        
+        if (!$cookies[city.id]) {
+          $cookies[city.id] = angular.toJson(city)
+        }
+        
+        callback(self.cityData());
       });
-    };
-    
-    this.getCity = function(id, callback) {
-      callback(self.cities[id]);
+      
+      this.cityData = function() {
+        return self.cityIds.map(function(key) {
+          return angular.fromJson($cookies[key]);
+        });
+      }
     };
   }]);

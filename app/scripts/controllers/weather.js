@@ -21,10 +21,10 @@ angular.module('weatherApp')
     this.roomForButton = true;
 
     this.search = function() {
-      weather.search(self.query, function(data) {
-        self.cities.push(data);
+      weather.search(self.query, function(cities) {
         self.query = '';
         self.showForm = false;
+        self.cities = cities;
         
         self.organizeRows();
       });
@@ -50,8 +50,8 @@ angular.module('weatherApp')
 
       });
       
-      var lastRow = self.cityRows[self.cityRows.length - 1];      
-      this.roomForButton = lastRow.length < self.columns;
+      var lastRow = self.cityRows[self.cityRows.length - 1];
+      this.roomForButton = lastRow && lastRow.length < self.columns;
     }
     
     this.toggleForm = function() {

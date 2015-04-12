@@ -27,7 +27,7 @@ body {
 
 /* Custom page footer */
 .footer {
-  margin-top: 30px;
+  margin-top: 10px;
   padding-top: 19px;
   color: #777;
   border-top: 1px solid #e5e5e5;
@@ -64,6 +64,7 @@ body {
 .weather-list-item {
   display: block;
   height: 66px;
+  padding-top: 11px;
 }
 
 .weather-list-item * {
@@ -97,6 +98,15 @@ body {
 
 .weather-list-item:hover, .weather-list-item:hover * {
   text-decoration: none;
+}
+
+.column-panel {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.column-panel__label {
+  margin-right: 7px;
 }
 
 /* Responsive: Portrait tablets and up */

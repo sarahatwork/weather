@@ -15,10 +15,12 @@ angular.module('weatherApp')
     this.cities = [];
 
     // grid info
-    this.columns = 3;
-    this.colSpan = 12 / this.columns;
+    this.columns = 2;
     this.cityRows = [];
     this.roomForButton = true;
+    this.colSpan = function() {
+      return 12 / self.columns;
+    }
 
     this.search = function() {
       weather.getCityByQuery(self.query, function(cities) {

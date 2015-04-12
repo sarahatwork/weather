@@ -15,6 +15,13 @@
     <div class="row">
       <div class="col-sm-12">
         <div filter-form></div>
+        
+        <div class="alert alert-danger" ng-show="ctrl.error">
+          <button type="button" class="close" ng-click="ctrl.error = null;" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ctrl.error}}
+        </div>
       </div>
     </div>
     

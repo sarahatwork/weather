@@ -13,6 +13,7 @@ angular.module('weatherApp')
     this.query = '';
     this.cities = [];
     this.filterQuery = '';
+    this.error = '';
     
     // grid info
     this.$storage = $localStorage.$default({
@@ -25,10 +26,11 @@ angular.module('weatherApp')
     };
     
     this.search = function() {
-      weather.getCityByQuery(self.query, function(cities) {
+      weather.getCityByQuery(self.query, function(cities, error) {
         self.query = '';
         self.cities = cities;
         self.organizeRows();
+        self.error = error;
       });
     };
     

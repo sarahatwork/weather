@@ -15,7 +15,9 @@ angular.module('weatherApp')
       // list of IDs, eg 'CITY-Jersey%20City_STATE-NJ'
       cityIds: [],
       // map of queries to IDs, eg 'Jersey City' => 'CITY-Jersey%20City_STATE-NJ'
-      cityQueries: {}
+      cityQueries: {},
+      // queries that yielded no results
+      duds: []
     });
     
     this.imgFor = function(code) {
@@ -31,7 +33,15 @@ angular.module('weatherApp')
                 '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
       
       $http.get(url).then(function (res) {
-        var channel = res.data.query.results.channel;
+        var results = res.data.query.results;
+        
+        if (!results) {
+          self.$storage.duds.push(query);
+          callback(self.cityData(), 'Invalid city name.');
+          return;
+        }
+        
+        var channel = results.channel;
         var city = {};
       
         city.name = channel.location.city;
@@ -80,6 +90,12 @@ angular.module('weatherApp')
     
     this.getCityByQuery = function(query, callback) {
       query = query.toLowerCase();
+      
+      if (self.$storage.duds.indexOf(query) !== -1) {
+        callback(self.cityData(), 'Invalid city name.');
+        return;
+      }
+      
       var cityId = self.$storage.cityQueries[query];
       
       if (cityId) {

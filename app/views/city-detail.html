@@ -1,0 +1,46 @@
+<div class="ng-cloak" ng-controller="CityDetailCtrl as ctrl">
+  <div class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1>{{ctrl.city.name}} Weather</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>5-Day Forecast</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-striped forecast-table">
+          <tr ng-repeat="forecast in ctrl.city.forecast">
+            <td>
+              <h3>{{forecast.day}}, {{forecast.date}}</h3>
+            </td>
+            <td>
+              <strong>{{forecast.text}}</strong>,
+              High - {{forecast.high}}°F, Low - {{forecast.low}}°F
+            </td>
+            <td>
+              <img ng-src="{{forecast.img}}" class="weather-img">
+            </td>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <a href="#/">Back</a>
+      </div>
+    </div>
+  </div>
+</div>

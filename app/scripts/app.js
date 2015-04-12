@@ -21,4 +21,8 @@ angular
         templateUrl: 'views/weather.html',
         controller: 'WeatherCtrl'
       })
+      .when('/cities/:id', {
+        templateUrl: 'views/city-detail.html',
+        controller: 'CityDetailCtrl'
+      })
   });

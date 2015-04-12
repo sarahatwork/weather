@@ -37,9 +37,10 @@ body {
   margin: 30px 0;
 }
 
-h2 {
+.weather-list-item h2 {
   font-size: 18px;
   margin-top: 0;
+  margin-bottom: 5px;
 }
 
 .search-button:not([disabled]) {
@@ -53,27 +54,29 @@ h2 {
 }
 
 .weather-img {
-  margin-right: 20px;
+  width: 36px;
 }
 
-.weather-list, .weather-list-item {
-  margin: 0;
-  padding: 0;
+.weather-img.weather-img--left {
+  margin-right: 10px;
 }
 
 .weather-list-item {
-  list-style-type: none;
-  margin-bottom: 20px;
+  display: block;
+  height: 66px;
 }
 
-.weather-list-item:last-child {
-  margin-bottom: 0;
+.weather-list-item * {
+  color: #333;
 }
 
-.weather-list-item:after {
-  content: '';
-  display: table;
-  clear: both; 
+.forecast-table h3 {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.weather-list-item:hover, .weather-list-item:hover * {
+  text-decoration: none;
 }
 
 /* Responsive: Portrait tablets and up */

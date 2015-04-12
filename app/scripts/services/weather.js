@@ -9,6 +9,13 @@
  */
 angular.module('weatherApp')
   .service('weather', ['$http', function ($http) {
+    var self = this;
+    this.cities = {};
+    
+    this.imgFor = function(code) {
+      return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
+    }
+    
     this.search = function(query, callback) {
       var url = "https://query.yahooapis.com/v1/public/yql?q=select" +
                 "%20*%20from%20weather.forecast%20where%20woeid%20in%20" +
@@ -22,12 +29,24 @@ angular.module('weatherApp')
       
         city.name = channel.location.city;
         city.state = channel.location.region;
+        city.id = channel.item.guid.content;
         
-        city.img = channel.item.description.match('img src=\"(.*)\"')[1];
         city.temp = channel.item.condition.temp;
         city.text = channel.item.condition.text;
+        city.img = self.imgFor(channel.item.condition.code);
+        
+        city.forecast = channel.item.forecast.map(function(data) {
+          data.img = self.imgFor(data.code);
+          return data;
+        });
+        
+        self.cities[city.id] = city;
         
         callback(city);
       });
+    };
+    
+    this.getCity = function(id, callback) {
+      callback(self.cities[id]);
     };
   }]);

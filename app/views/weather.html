@@ -11,7 +11,7 @@
 <div class="container">
   <div ng-controller="WeatherCtrl as ctrl" class="weather-list ng-cloak">
   
-    <div ng-repeat="cities in ctrl.cityRows" class="weather-list-item">
+    <div ng-repeat="cities in ctrl.cityRows">
       <div class="row">
         <div ng-repeat="c in cities">
           <div class="col-sm-{{ctrl.colSpan}}">

@@ -21,7 +21,7 @@ angular.module('weatherApp')
     this.roomForButton = true;
 
     this.search = function() {
-      weather.search(self.query, function(cities) {
+      weather.getCityByQuery(self.query, function(cities) {
         self.query = '';
         self.showForm = false;
         self.cities = cities;

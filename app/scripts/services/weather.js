@@ -11,6 +11,7 @@ angular.module('weatherApp')
   .service('weather', ['$http', '$cookies', function ($http, $cookies) {
     var self = this;
     this.cityIds = ($cookies['cityIds'] && angular.fromJson($cookies['cityIds'])) || [];
+    this.cityQueries = ($cookies['cityQueries'] && angular.fromJson($cookies['cityQueries'])) || {};
     
     this.imgFor = function(code) {
       return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
@@ -24,6 +25,7 @@ angular.module('weatherApp')
                 "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
     
       $http.get(url).then(function (res) {
+        console.log('i just made a request for ' + query)
         var channel = res.data.query.results.channel;
         var city = {};
       
@@ -44,7 +46,12 @@ angular.module('weatherApp')
           self.cityIds.push(city.id);
         }
         
+        if (!self.cityQueries[query]) {
+          self.cityQueries[query] = city.id;
+        }
+        
         $cookies['cityIds'] = angular.toJson(self.cityIds);
+        $cookies['cityQueries'] = angular.toJson(self.cityQueries);
         
         if (!$cookies[city.id]) {
           $cookies[city.id] = angular.toJson(city)
@@ -58,6 +65,14 @@ angular.module('weatherApp')
       return self.cityIds.map(function(key) {
         return angular.fromJson($cookies[key]);
       });
+    }
+    
+    this.getCityByQuery = function(query, callback) {
+      if (self.cityQueries[query]) {
+        callback(self.cityData());
+      } else {
+        self.search(query, callback)
+      }
     }
     
     this.getCityByKey = function(key, callback) {

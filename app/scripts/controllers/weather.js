@@ -8,7 +8,7 @@
  * Controller of the weatherApp
  */
 angular.module('weatherApp')
-  .controller('WeatherCtrl', ['weather', function (weather) {
+  .controller('WeatherCtrl', function (weather) {
     var self = this;
     this.query = 'Jersey City';
     this.showForm = false;
@@ -61,4 +61,4 @@ angular.module('weatherApp')
     }
 
     this.search();
-  }]);
+  });

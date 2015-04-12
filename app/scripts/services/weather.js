@@ -8,7 +8,7 @@
  * Service in the weatherApp.
  */
 angular.module('weatherApp')
-  .service('weather', ['$http', '$cookies', 'urlEncodeFilter', function ($http, $cookies, urlEncodeFilter) {
+  .service('weather', function ($http, $cookies, urlEncodeFilter) {
     var self = this;
     this.cityIds = ($cookies['cityIds'] && angular.fromJson($cookies['cityIds'])) || [];
     this.cityQueries = ($cookies['cityQueries'] && angular.fromJson($cookies['cityQueries'])) || {};
@@ -86,4 +86,4 @@ angular.module('weatherApp')
     this.getCityByKey = function(key, callback) {
       callback(angular.fromJson($cookies[key]));
     }
-  }]);
+  });

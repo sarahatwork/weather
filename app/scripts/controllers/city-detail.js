@@ -8,11 +8,11 @@
  * Controller of the weatherApp
  */
 angular.module('weatherApp')
-  .controller('CityDetailCtrl', ['weather', '$routeParams', function (weather, $routeParams) {
+  .controller('CityDetailCtrl', function (weather, $routeParams) {
     var self = this;
     this.city = {};
 
     weather.getCityByKey($routeParams.id, function(city) {
       self.city = city;
     })
-  }]);
+  });

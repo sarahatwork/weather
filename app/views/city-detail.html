@@ -4,7 +4,11 @@
       <div class="row">
         <div class="col-sm-12 clear-fix">
           <h1 class="pull-left">{{ctrl.city.name}} Weather <img class="weather-img weather-img--city-details" ng-src="{{ctrl.city.img}}"></h1>
-          <a href="#/" class="details-header__back-link pull-right">Back</a>
+          <div class="panel panel-default header-panel pull-right">
+            <div class="panel-body">
+              <a href="#/">Back</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -92,8 +96,12 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
-        <a href="#/">Back</a>
+      <div class="col-sm-12 clearfix">
+        <a call="pull-left" href="#/">Back</a>
+        <div class="pull-right">
+          <strong>Last Updated:</strong>
+          {{ctrl.city.dateUpdated}}
+        </div>
       </div>
     </div>
   </div>

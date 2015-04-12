@@ -14,5 +14,5 @@ angular.module('weatherApp')
 
     weather.getCityById($routeParams.id, function(city) {
       self.city = city;
-    })
+    });
   });

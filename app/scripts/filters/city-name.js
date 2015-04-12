@@ -16,7 +16,7 @@ angular.module('weatherApp')
           query = query.toLowerCase();
         
           return city.name.toLowerCase().indexOf(query) !== -1 ||
-            city.state.toLowerCase().indexOf(query) !== -1
+            city.state.toLowerCase().indexOf(query) !== -1;
         });
         
         callback(filteredCities);

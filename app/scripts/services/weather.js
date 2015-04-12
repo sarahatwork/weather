@@ -20,15 +20,15 @@ angular.module('weatherApp')
     
     this.imgFor = function(code) {
       return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
-    }
+    };
     
     this.search = function(query, callback) {
-      var queryString = "select * from weather.forecast where woeid in " +
-                        "(select woeid from geo.places(1) where text=\"" + query + "\")";
+      var queryString = 'select * from weather.forecast where woeid in ' +
+                        '(select woeid from geo.places(1) where text="' + query + '")';
                 
-      var url = "https://query.yahooapis.com/v1/public/yql?q=" +
+      var url = 'https://query.yahooapis.com/v1/public/yql?q=' +
                 urlEncodeFilter(queryString) +
-                "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+                '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys';
       
       $http.get(url).then(function (res) {
         var channel = res.data.query.results.channel;
@@ -49,12 +49,12 @@ angular.module('weatherApp')
           return data;
         });
         
-        city.feelsLike = channel.wind.chill
-        city.windSpeed = channel.wind.speed
-        city.humidity = channel.atmosphere.humidity
-        city.visibility = channel.atmosphere.visibility
-        city.sunrise = channel.astronomy.sunrise
-        city.sunset = channel.astronomy.sunset
+        city.feelsLike = channel.wind.chill;
+        city.windSpeed = channel.wind.speed;
+        city.humidity = channel.atmosphere.humidity;
+        city.visibility = channel.atmosphere.visibility;
+        city.sunrise = channel.astronomy.sunrise;
+        city.sunset = channel.astronomy.sunset;
         
         if (self.$storage.cityIds.indexOf(city.id) === -1) {
           self.$storage.cityIds.push(city.id);
@@ -76,7 +76,7 @@ angular.module('weatherApp')
       return self.$storage.cityIds.map(function(key) {
         return self.$storage[key];
       });
-    }
+    };
     
     this.getCityByQuery = function(query, callback) {
       query = query.toLowerCase();
@@ -96,14 +96,14 @@ angular.module('weatherApp')
         } else {
           // else, clear data
           self.$storage[cityId] = null;
-          self.search(query, callback)
+          self.search(query, callback);
         }
         
       } else {
         // else if no data, fetch data
-        self.search(query, callback)
+        self.search(query, callback);
       }
-    }
+    };
     
     this.loadCities = function(callback) {
       if (self.$storage.cityIds.length > 0) {
@@ -113,19 +113,19 @@ angular.module('weatherApp')
         // else, grab some data for Jersey City
         self.getCityByQuery('Jersey City', callback);
       }
-    }
+    };
     
     this.getCityById = function(cityId, callback) {
       callback(self.$storage[urlEncodeFilter(cityId)]);
-    }
+    };
     
     this.deleteCity = function(cityId, callback) {
       var idx = self.$storage.cityIds.indexOf(cityId);
       self.$storage.cityIds.splice(idx, 1);
       callback(self.cityData());
-    }
+    };
     
     this.todaysDate = function() {
-      return $filter('date')(new Date(), "MM-dd-yyyy");
-    }
+      return $filter('date')(new Date(), 'MM-dd-yyyy');
+    };
   });

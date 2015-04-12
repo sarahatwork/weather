@@ -22,5 +22,5 @@ angular
       })
       .when('/cities/:id', {
         templateUrl: 'views/city-detail.html'
-      })
+      });
   });

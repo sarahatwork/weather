@@ -7,7 +7,7 @@
  * # citySummary
  */
 angular.module('weatherApp')
-  .directive('citySummary', function (weather) {
+  .directive('citySummary', function () {
     return {
       templateUrl: 'views/city-summary.html',
       restrict: 'A',
@@ -19,8 +19,8 @@ angular.module('weatherApp')
         $scope.onClickCloseButton = function() {
           $scope.deleteCity({
             cityId: $scope.city.id
-          })
-        }
+          });
+        };
       }
     };
   });

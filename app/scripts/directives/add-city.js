@@ -11,7 +11,7 @@ angular.module('weatherApp')
     return {
       templateUrl: 'views/new-city.html',
       restrict: 'A',
-      link: function($scope, $element, $attrs) {
+      link: function($scope, $element) {
         $scope.showForm = false;
         $scope.$element = $element;
         
@@ -19,8 +19,8 @@ angular.module('weatherApp')
           $scope.showForm = !$scope.showForm;
           $timeout(function() {
             $scope.$element.find('.add-city-input')[0].focus();
-          })
-        }
+          });
+        };
       }
     };
   });

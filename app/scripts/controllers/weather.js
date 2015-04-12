@@ -8,12 +8,13 @@
  * Controller of the weatherApp
  */
 angular.module('weatherApp')
-  .controller('WeatherCtrl', function (weather, $localStorage, $location) {
+  .controller('WeatherCtrl', function (weather, $localStorage, $location, cityNameFilter) {
     var self = this;
     this.query = '';
     this.showForm = false;
     this.cities = [];
-
+    this.filterQuery = '';
+    
     // grid info
     this.$storage = $localStorage.$default({
       columns: 2
@@ -73,6 +74,15 @@ angular.module('weatherApp')
         self.cities = cities;
         self.organizeRows();
       })
+    }
+    
+    this.filterCities = function() {
+      weather.loadCities(function(cities) {
+        cityNameFilter(cities, self.filterQuery, function(c) {
+          self.cities = c;
+          self.organizeRows();
+        });
+      });
     }
 
     this.loadCities();

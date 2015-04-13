@@ -81,8 +81,4 @@ angular.module('weatherApp')
     };
 
     this.loadCities();
-    
-    this.resetStorage = function() {
-      self.$storage.$reset();
-    };
   });

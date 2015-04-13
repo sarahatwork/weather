@@ -25,6 +25,10 @@ body {
   padding-right: 15px;
 }
 
+a[ng-click]{
+  cursor: pointer;
+}
+
 /* Custom page footer */
 .footer {
   margin-top: 10px;

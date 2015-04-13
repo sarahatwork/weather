@@ -11,6 +11,8 @@ angular.module('weatherApp')
   .service('city', function (weather, $localStorage, urlEncodeFilter) {
     var self = this;
     
+    this.cities = [];
+    
     this.$storage = $localStorage.$default({
       // list of IDs, eg 'CITY-Jersey%20City_STATE-NJ'
       cityIds: [],
@@ -20,19 +22,9 @@ angular.module('weatherApp')
       duds: []
     });
     
-    this.getCities = function() {
-      return self.$storage.cityIds.map(function(cityId) {
-        return self.$storage[cityId];
-      });
-    };
-    
-    this.loadCities = function(callback) {
-      if (self.$storage.cityIds.length > 0) {
-        // if we have some cities stored, return those
-        callback(self.getCities(callback));
-      } else {
-        // else, grab some data for Jersey City
-        self.getCityByQuery('Jersey City', callback);
+    this.loadCities = function() {
+      if (self.$storage.cityIds.length === 0) {
+        self.getCityByQuery('Jersey City');
       }
     };
     
@@ -44,7 +36,7 @@ angular.module('weatherApp')
       query = query.toLowerCase();
       
       if (self.$storage.duds.indexOf(query) !== -1) {
-        callback(self.getCities(), 'Invalid city name.');
+        callback('Invalid city name.');
         return;
       }
       
@@ -58,28 +50,27 @@ angular.module('weatherApp')
           // (in case we deleted city from display but still have data)
           self.$storage.cityIds.push(cityId);
         }
-          
-        callback(self.getCities());
       } else {
         // else if no data, fetch data
-        self.searchForCity(query, callback);
+        weather.search(query, callback);
       }
     };
 
     this.updateCity = function(cityId, callback) {
       var cityData = self.$storage[cityId];
-      self.searchForCity(cityData.name + ' ' + cityData.state, callback);
+      weather.search(cityData.name + ' ' + cityData.state, callback);
     }
     
-    this.deleteCity = function(cityId, callback) {
+    this.deleteCity = function(cityId) {
       var idx = self.$storage.cityIds.indexOf(cityId);
       self.$storage.cityIds.splice(idx, 1);
-      callback(self.getCities());
     };
     
-    this.searchForCity = function(query, callback) {
-      weather.search(query, function() {
-        callback(self.getCities());
+    var getCities = function() {
+      self.$storage.cityIds.forEach(function(cityId) {
+        self.cities.push(self.$storage[cityId]);
       });
-    }
+    };
+    
+    getCities();
   });

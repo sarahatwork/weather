@@ -26,7 +26,7 @@ angular.module('weatherApp')
         
         if (!results) {
           self.$storage.duds.push(query);
-          callback(self.getCities(), 'Invalid city name.');
+          callback('Invalid city name.');
           return;
         }
         

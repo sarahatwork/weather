@@ -26,9 +26,9 @@
     </div>
     
     <div class="weather-list">
-      <div ng-repeat="cities in ctrl.cityRows">
+      <div>
         <div class="row">
-          <div ng-repeat="c in cities">
+          <div ng-repeat="c in ctrl.cities">
             <div class="col-sm-{{ctrl.colSpan()}}">
               <div city-summary-block
                    city="c"

@@ -37,7 +37,7 @@ angular.module('weatherApp')
         
         if (!results) {
           self.$storage.duds.push(query);
-          callback(self.cityData(), 'Invalid city name.');
+          callback(self.updateAndFetchCityData(), 'Invalid city name.');
           return;
         }
         
@@ -70,20 +70,22 @@ angular.module('weatherApp')
           self.$storage.cityIds.push(city.id);
         }
         
-        if (!self.$storage.cityQueries[query]) {
-          self.$storage.cityQueries[query] = city.id;
-        }
+        self.$storage.cityQueries[query] = city.id;
+        self.$storage[city.id] = city;
         
-        if (!self.$storage[city.id]) {
-          self.$storage[city.id] = city;
-        }
-        
-        callback(self.cityData());
+        callback(self.updateAndFetchCityData());
       });
     };
     
-    this.cityData = function() {
+    this.updateAndFetchCityData = function() {
       return self.$storage.cityIds.map(function(key) {
+        var cityData = self.$storage[key];
+        
+        if (cityData.dateUpdated !== self.todaysDate()) {
+          var query = cityData.name + ', ' + cityData.state;
+          self.search(query, self.updateAndFetchCityData);
+        }
+
         return self.$storage[key];
       });
     };
@@ -92,7 +94,7 @@ angular.module('weatherApp')
       query = query.toLowerCase();
       
       if (self.$storage.duds.indexOf(query) !== -1) {
-        callback(self.cityData(), 'Invalid city name.');
+        callback(self.updateAndFetchCityData(), 'Invalid city name.');
         return;
       }
       
@@ -100,21 +102,14 @@ angular.module('weatherApp')
       
       if (cityId) {
         // if data exists
-        var lastUpdatedDate = self.$storage[cityId].dateUpdated;
-        
-        if (self.todaysDate() === lastUpdatedDate) {
-          // if last updated today, make sure cityId is in cityIds array
+
+        if (self.$storage.cityIds.indexOf(cityId) === -1) {
+          // make sure cityId is in cityIds array
           // (in case we deleted city from display but still have data)
-          if (self.$storage.cityIds.indexOf(cityId) === -1) {
-            self.$storage.cityIds.push(cityId);
-          }
-          callback(self.cityData());
-        } else {
-          // else, clear data
-          self.$storage[cityId] = null;
-          self.search(query, callback);
+          self.$storage.cityIds.push(cityId);
         }
-        
+          
+        callback(self.updateAndFetchCityData());
       } else {
         // else if no data, fetch data
         self.search(query, callback);
@@ -124,7 +119,7 @@ angular.module('weatherApp')
     this.loadCities = function(callback) {
       if (self.$storage.cityIds.length > 0) {
         // if we have some cities stored, return those
-        callback(self.cityData());
+        callback(self.updateAndFetchCityData(callback));
       } else {
         // else, grab some data for Jersey City
         self.getCityByQuery('Jersey City', callback);
@@ -138,7 +133,7 @@ angular.module('weatherApp')
     this.deleteCity = function(cityId, callback) {
       var idx = self.$storage.cityIds.indexOf(cityId);
       self.$storage.cityIds.splice(idx, 1);
-      callback(self.cityData());
+      callback(self.updateAndFetchCityData());
     };
     
     this.todaysDate = function() {

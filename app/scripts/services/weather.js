@@ -8,7 +8,7 @@
  * Service in the weatherApp.
  */
 angular.module('weatherApp')
-  .service('weather', function ($http, $localStorage, $filter, urlEncodeFilter) {
+  .service('weather', function ($http, $localStorage, time, urlEncodeFilter) {
     var self = this;
     
     this.$storage = $localStorage.$default({
@@ -33,7 +33,7 @@ angular.module('weatherApp')
         
         if (!results) {
           self.$storage.duds.push(query);
-          callback(self.updateAndFetchCityData(), 'Invalid city name.');
+          callback(self.getCities(), 'Invalid city name.');
           return;
         }
         
@@ -44,7 +44,7 @@ angular.module('weatherApp')
         city.state = channel.location.region;
         
         city.id = 'CITY-' + urlEncodeFilter(city.name) + '_STATE-' + city.state;
-        city.dateUpdated = todaysDate();
+        city.dateUpdated = time.todaysDate();
         
         city.temp = channel.item.condition.temp;
         city.text = channel.item.condition.text;
@@ -69,20 +69,13 @@ angular.module('weatherApp')
         self.$storage.cityQueries[query] = city.id;
         self.$storage[city.id] = city;
         
-        callback(self.updateAndFetchCityData());
+        callback(self.getCities());
       });
     };
     
-    this.updateAndFetchCityData = function() {
-      return self.$storage.cityIds.map(function(key) {
-        var cityData = self.$storage[key];
-        
-        if (cityData.dateUpdated !== todaysDate()) {
-          var query = cityData.name + ', ' + cityData.state;
-          self.search(query, self.updateAndFetchCityData);
-        }
-
-        return self.$storage[key];
+    this.getCities = function() {
+      return self.$storage.cityIds.map(function(cityId) {
+        return self.$storage[cityId];
       });
     };
     
@@ -90,7 +83,7 @@ angular.module('weatherApp')
       query = query.toLowerCase();
       
       if (self.$storage.duds.indexOf(query) !== -1) {
-        callback(self.updateAndFetchCityData(), 'Invalid city name.');
+        callback(self.getCities(), 'Invalid city name.');
         return;
       }
       
@@ -105,7 +98,7 @@ angular.module('weatherApp')
           self.$storage.cityIds.push(cityId);
         }
           
-        callback(self.updateAndFetchCityData());
+        callback(self.getCities());
       } else {
         // else if no data, fetch data
         self.search(query, callback);
@@ -115,30 +108,31 @@ angular.module('weatherApp')
     this.loadCities = function(callback) {
       if (self.$storage.cityIds.length > 0) {
         // if we have some cities stored, return those
-        callback(self.updateAndFetchCityData(callback));
+        callback(self.getCities(callback));
       } else {
         // else, grab some data for Jersey City
         self.getCityByQuery('Jersey City', callback);
       }
     };
     
-    this.getCityById = function(cityId, callback) {
+    this.getCity = function(cityId, callback) {
       callback(self.$storage[urlEncodeFilter(cityId)]);
     };
     
     this.deleteCity = function(cityId, callback) {
       var idx = self.$storage.cityIds.indexOf(cityId);
       self.$storage.cityIds.splice(idx, 1);
-      callback(self.updateAndFetchCityData());
+      callback(self.getCities());
     };
+    
+    this.updateCity = function(cityId, callback) {
+      var cityData = self.$storage[cityId];
+      self.search(cityData.name + ' ' + cityData.state, callback);
+    }
     
     // private methods
     
     var imgFor = function(code) {
       return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
-    };
-    
-    var todaysDate = function() {
-      return $filter('date')(new Date(), 'MM-dd-yyyy');
     };
   });

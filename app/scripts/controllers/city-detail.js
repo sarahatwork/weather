@@ -12,7 +12,7 @@ angular.module('weatherApp')
     var self = this;
     this.city = {};
 
-    weather.getCityById($routeParams.id, function(city) {
+    weather.getCity($routeParams.id, function(city) {
       self.city = city;
     });
   });

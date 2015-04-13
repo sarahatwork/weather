@@ -57,6 +57,13 @@ angular.module('weatherApp')
       this.roomForButton = lastRow && lastRow.length < self.$storage.columns;
     };
     
+    this.updateCity = function(cityId) {
+      weather.updateCity(cityId, function(cities) {
+        self.cities = cities;
+        self.organizeRows();
+      });
+    };
+    
     this.deleteCity = function(cityId) {
       weather.deleteCity(cityId, function(cities) {
         self.cities = cities;

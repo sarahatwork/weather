@@ -30,7 +30,11 @@
         <div class="row">
           <div ng-repeat="c in cities">
             <div class="col-sm-{{ctrl.colSpan()}}">
-              <div city-summary city="c" delete-city="ctrl.deleteCity(cityId)"></div>
+              <div city-summary
+                   city="c"
+                   update-city="ctrl.updateCity(cityId)"
+                   delete-city="ctrl.deleteCity(cityId)">
+              </div>
             </div>
             <div class="col-sm-{{ctrl.colSpan()}}"
                  ng-show="$last && $parent.$last && ctrl.roomForButton">

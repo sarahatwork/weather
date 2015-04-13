@@ -8,7 +8,7 @@
  * Controller of the weatherApp
  */
 angular.module('weatherApp')
-  .controller('WeatherCtrl', function (weather, $localStorage, $location, cityNameFilter) {
+  .controller('WeatherCtrl', function (weather, $localStorage, cityNameFilter) {
     var self = this;
     this.query = '';
     this.cities = [];
@@ -81,11 +81,6 @@ angular.module('weatherApp')
     };
 
     this.loadCities();
-    
-    // debug stuff
-    this.debug = function() {
-      return $location.search().debug;
-    };
     
     this.resetStorage = function() {
       self.$storage.$reset();

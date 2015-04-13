@@ -20,10 +20,6 @@ angular.module('weatherApp')
       duds: []
     });
     
-    this.imgFor = function(code) {
-      return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
-    };
-    
     this.search = function(query, callback) {
       var queryString = 'select * from weather.forecast where woeid in ' +
                         '(select woeid from geo.places(1) where text="' + query + '")';
@@ -48,14 +44,14 @@ angular.module('weatherApp')
         city.state = channel.location.region;
         
         city.id = 'CITY-' + urlEncodeFilter(city.name) + '_STATE-' + city.state;
-        city.dateUpdated = self.todaysDate();
+        city.dateUpdated = todaysDate();
         
         city.temp = channel.item.condition.temp;
         city.text = channel.item.condition.text;
-        city.img = self.imgFor(channel.item.condition.code);
+        city.img = imgFor(channel.item.condition.code);
         
         city.forecast = channel.item.forecast.map(function(data) {
-          data.img = self.imgFor(data.code);
+          data.img = imgFor(data.code);
           return data;
         });
         
@@ -81,7 +77,7 @@ angular.module('weatherApp')
       return self.$storage.cityIds.map(function(key) {
         var cityData = self.$storage[key];
         
-        if (cityData.dateUpdated !== self.todaysDate()) {
+        if (cityData.dateUpdated !== todaysDate()) {
           var query = cityData.name + ', ' + cityData.state;
           self.search(query, self.updateAndFetchCityData);
         }
@@ -136,7 +132,13 @@ angular.module('weatherApp')
       callback(self.updateAndFetchCityData());
     };
     
-    this.todaysDate = function() {
+    // private methods
+    
+    var imgFor = function(code) {
+      return 'http://l.yimg.com/a/i/us/we/52/' + code + '.gif';
+    };
+    
+    var todaysDate = function() {
       return $filter('date')(new Date(), 'MM-dd-yyyy');
     };
   });

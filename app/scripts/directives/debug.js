@@ -7,19 +7,16 @@
  * # debug
  */
 angular.module('weatherApp')
-  .directive('debug', function ($location, $compile) {
+  .directive('debug', function ($location) {
     return {
       restrict: 'A',
-      compile: function ( $element, attr ) {
-        console.log($location.search().debug)
-        console.log($location.search().debug !== undefined)
-        $element.attr('ng-show', $location.search().debug !== undefined)
-        $element.removeAttr('debug');
-        var fn = $compile($element);
+      transclude: 'element',
+      link: function($scope, $element, $attrs, ctrl, $transclude) {
+        if ($location.search().debug === undefined) { return; }
         
-        return function(scope) {
-          fn(scope);
-        };
+        $transclude($scope, function(clonedElement, scope) {
+          $element.after(clonedElement);
+        });
       }
     };
   });

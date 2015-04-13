@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc directive
- * @name weatherApp.directive:citySummary
+ * @name weatherApp.directive:citySummaryBlock
  * @description
- * # citySummary
+ * # citySummaryBlock
  */
 angular.module('weatherApp')
-  .directive('citySummary', function (weather, time) {
+  .directive('citySummaryBlock', function (weather, time) {
     return {
-      templateUrl: 'views/city-summary.html',
+      templateUrl: 'views/city-summary-block.html',
       restrict: 'A',
       scope: {
         city: '=',

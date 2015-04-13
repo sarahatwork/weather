@@ -11,14 +11,7 @@ angular.module('weatherApp')
   .service('weather', function ($http, $localStorage, time, urlEncodeFilter) {
     var self = this;
     
-    this.$storage = $localStorage.$default({
-      // list of IDs, eg 'CITY-Jersey%20City_STATE-NJ'
-      cityIds: [],
-      // map of queries to IDs, eg 'Jersey City' => 'CITY-Jersey%20City_STATE-NJ'
-      cityQueries: {},
-      // queries that yielded no results
-      duds: []
-    });
+    this.$storage = $localStorage;
     
     this.search = function(query, callback) {
       var queryString = 'select * from weather.forecast where woeid in ' +
@@ -69,66 +62,9 @@ angular.module('weatherApp')
         self.$storage.cityQueries[query] = city.id;
         self.$storage[city.id] = city;
         
-        callback(self.getCities());
+        callback();
       });
     };
-    
-    this.getCities = function() {
-      return self.$storage.cityIds.map(function(cityId) {
-        return self.$storage[cityId];
-      });
-    };
-    
-    this.getCityByQuery = function(query, callback) {
-      query = query.toLowerCase();
-      
-      if (self.$storage.duds.indexOf(query) !== -1) {
-        callback(self.getCities(), 'Invalid city name.');
-        return;
-      }
-      
-      var cityId = self.$storage.cityQueries[query];
-      
-      if (cityId) {
-        // if data exists
-
-        if (self.$storage.cityIds.indexOf(cityId) === -1) {
-          // make sure cityId is in cityIds array
-          // (in case we deleted city from display but still have data)
-          self.$storage.cityIds.push(cityId);
-        }
-          
-        callback(self.getCities());
-      } else {
-        // else if no data, fetch data
-        self.search(query, callback);
-      }
-    };
-    
-    this.loadCities = function(callback) {
-      if (self.$storage.cityIds.length > 0) {
-        // if we have some cities stored, return those
-        callback(self.getCities(callback));
-      } else {
-        // else, grab some data for Jersey City
-        self.getCityByQuery('Jersey City', callback);
-      }
-    };
-    
-    this.getCity = function(cityId, callback) {
-      callback(self.$storage[urlEncodeFilter(cityId)]);
-    };
-    
-    this.deleteCity = function(cityId, callback) {
-      var idx = self.$storage.cityIds.indexOf(cityId);
-      self.$storage.cityIds.splice(idx, 1);
-      callback(self.getCities());
-    };
-    
-    this.updateCity = function(cityId, callback) {
-      var cityData = self.$storage[cityId];
-      self.search(cityData.name + ' ' + cityData.state, callback);
-    }
     
     // private methods
     

@@ -1,21 +1,55 @@
-<button type="button"
-        class="close weather-list-item__close-button"
-        aria-label="Close"
-        ng-click="onClickCloseButton()">
-  <span aria-hidden="true">&times;</span>
-</button>
-
-<a ng-href="#/cities/{{city.id}}" class="well well-sm weather-list-item">
-  <img ng-src="{{city.img}}" class="weather-img weather-img--left pull-left">
-  
-  <h2>{{city.name}}, {{city.state}}</h2>
-  
-  <div debug class="pull-right">
-    DEBUG: Updated {{city.dateUpdated}}
-  </div>
-  
-  <div>
-    <strong>{{city.text}}</strong>, {{city.temp}}°F
+<div ng-controller="WeatherCtrl as ctrl" class="ng-cloak">
+  <div class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 clearfix">
+          <h1 class="pull-left">City Weather</h1>
+          
+          <div city-summary-header-panel></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-</a>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div filter-form></div>
+        
+        <div class="alert alert-danger" ng-show="ctrl.error">
+          <button type="button" class="close" ng-click="ctrl.error = null;" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ctrl.error}}
+        </div>
+      </div>
+    </div>
+    
+    <div class="weather-list">
+      <div ng-repeat="cities in ctrl.cityRows">
+        <div class="row">
+          <div ng-repeat="c in cities">
+            <div class="col-sm-{{ctrl.colSpan()}}">
+              <div city-summary-block
+                   city="c"
+                   update-city="ctrl.updateCity(cityId)"
+                   delete-city="ctrl.deleteCity(cityId)">
+              </div>
+            </div>
+            <div class="col-sm-{{ctrl.colSpan()}}"
+                 ng-show="$last && $parent.$last && ctrl.roomForButton">
+              <div add-city></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row" ng-hide="ctrl.roomForButton">
+        <div class="col-sm-{{ctrl.colSpan()}}">
+          <div add-city></div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>

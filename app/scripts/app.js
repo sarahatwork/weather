@@ -18,7 +18,7 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/weather.html'
+        templateUrl: 'views/city-summary.html'
       })
       .when('/cities/:id', {
         templateUrl: 'views/city-detail.html'

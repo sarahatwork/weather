@@ -8,7 +8,7 @@
  * Controller of the weatherApp
  */
 angular.module('weatherApp')
-  .controller('WeatherCtrl', function (weather, $localStorage, cityNameFilter) {
+  .controller('WeatherCtrl', function ($localStorage, city, cityNameFilter) {
     var self = this;
     this.query = '';
     this.cities = [];
@@ -26,7 +26,7 @@ angular.module('weatherApp')
     };
     
     this.search = function() {
-      weather.getCityByQuery(self.query, function(cities, error) {
+      city.getCityByQuery(self.query, function(cities, error) {
         self.query = '';
         self.cities = cities;
         self.organizeRows();
@@ -58,28 +58,28 @@ angular.module('weatherApp')
     };
     
     this.updateCity = function(cityId) {
-      weather.updateCity(cityId, function(cities) {
+      city.updateCity(cityId, function(cities) {
         self.cities = cities;
         self.organizeRows();
       });
     };
     
     this.deleteCity = function(cityId) {
-      weather.deleteCity(cityId, function(cities) {
+      city.deleteCity(cityId, function(cities) {
         self.cities = cities;
         self.organizeRows();
       });
     };
     
     this.loadCities = function() {
-      weather.loadCities(function(cities) {
+      city.loadCities(function(cities) {
         self.cities = cities;
         self.organizeRows();
       });
     };
     
     this.filterCities = function() {
-      weather.loadCities(function(cities) {
+      city.loadCities(function(cities) {
         cityNameFilter(cities, self.filterQuery, function(c) {
           self.cities = c;
           self.organizeRows();

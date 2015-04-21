@@ -26,30 +26,22 @@
     </div>
     
     <div class="weather-list">
-      <div>
-        <div class="row">
-          <div ng-repeat="c in ctrl.cities">
-            <div class="col-sm-{{ctrl.colSpan()}}">
-              <div city-summary-block
-                   city="c"
-                   update-city="ctrl.updateCity(cityId)"
-                   delete-city="ctrl.deleteCity(cityId)">
-              </div>
-            </div>
-            <div class="col-sm-{{ctrl.colSpan()}}"
-                 ng-show="$last && $parent.$last && ctrl.roomForButton">
-              <div add-city></div>
-            </div>
+      
+      <div columns col-count="2">
+        
+        <div ng-repeat="c in ctrl.cities">
+          <div city-summary-block
+               column
+               city="c"
+               update-city="ctrl.updateCity(cityId)"
+               delete-city="ctrl.deleteCity(cityId)">
           </div>
         </div>
+        
+        <div column add-city></div>
+        
       </div>
-    
-      <div class="row" ng-hide="ctrl.roomForButton">
-        <div class="col-sm-{{ctrl.colSpan()}}">
-          <div add-city></div>
-        </div>
-      </div>
-    
+      
     </div>
   </div>
 </div>

@@ -28,18 +28,18 @@ angular.module('weatherApp')
         };
         
         var checkTime = function() {
-          console.log('im checking the time');
+          // console.log('im checking the time');
           return time.isTodaysDate($scope.city.dateUpdated);
         };
 
         $scope.$watch(checkTime, function(isTodaysDate) {
           if (!isTodaysDate) {
-            console.log($scope.city.name + ' no longer todays date!');
+            // console.log($scope.city.name + ' no longer todays date!');
             $scope.updateCity({
               cityId: $scope.city.id
             });
           } else {
-            console.log($scope.city.name + ' still todays date')
+            // console.log($scope.city.name + ' still todays date')
           }
         })
       }
